@@ -16,6 +16,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 
+import '../../../utils/utils.dart';
+
 class CreateCase extends StatefulWidget {
   CreateCase();
   @override
@@ -85,6 +87,10 @@ class _CreateCaseState extends State<CreateCase> {
     });
     if (!_createCaseFormKey.currentState.validate()) {
       focusError();
+      return;
+    }
+    if (caseBloc.currentEditCase['closed_on'] == "") {
+      showToast('Please Choose Close Date.');
       return;
     }
     _createCaseFormKey.currentState.save();
@@ -309,13 +315,21 @@ class _CreateCaseState extends State<CreateCase> {
                       margin: EdgeInsets.only(bottom: 5.0),
                       child: RichText(
                         text: TextSpan(
-                            text: 'Priority :',
-                            style: GoogleFonts.robotoSlab(
-                                textStyle: TextStyle(
-                                    color:
-                                        Theme.of(context).secondaryHeaderColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: screenWidth / 25))),
+                          text: 'Priority',
+                          style: GoogleFonts.robotoSlab(
+                              textStyle: TextStyle(
+                                  color: Theme.of(context).secondaryHeaderColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: screenWidth / 25)),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: '* ',
+                                style: GoogleFonts.robotoSlab(
+                                    textStyle: TextStyle(color: Colors.red))),
+                            TextSpan(
+                                text: ': ', style: GoogleFonts.robotoSlab())
+                          ],
+                        ),
                       )),
                   Container(
                     margin: EdgeInsets.only(bottom: 10.0),
@@ -332,6 +346,15 @@ class _CreateCaseState extends State<CreateCase> {
                       onChanged: (value) {
                         FocusScope.of(context).unfocus();
                         caseBloc.currentEditCase['priority'] = value;
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          if (_focuserr == null) {
+                            _focuserr = _priorityFocusNode;
+                          }
+                          return 'This field is required.';
+                        }
+                        return null;
                       },
                       items: caseBloc.priorityObjForDropDown.map((location) {
                         return DropdownMenuItem(
@@ -381,12 +404,12 @@ class _CreateCaseState extends State<CreateCase> {
                       style: GoogleFonts.robotoSlab(
                           textStyle: TextStyle(color: Colors.black)),
                       hint: Text('Select Case Type'),
-                      value: (caseBloc.currentEditCase['case_type'] != "")
-                          ? caseBloc.currentEditCase['case_type']
+                      value: (caseBloc.currentEditCase['type_of_case'] != "")
+                          ? caseBloc.currentEditCase['type_of_case']
                           : null,
                       onChanged: (value) {
                         FocusScope.of(context).unfocus();
-                        caseBloc.currentEditCase['case_type'] = value;
+                        caseBloc.currentEditCase['type_of_case'] = value;
                       },
                       items: caseBloc.typeOfCaseObjForDropDown.map((location) {
                         return DropdownMenuItem(
@@ -396,11 +419,11 @@ class _CreateCaseState extends State<CreateCase> {
                       }).toList(),
                     ),
                   ),
-                  _errors != null && _errors['case_type'] != null
+                  _errors != null && _errors['type_of_case'] != null
                       ? Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            _errors['case_type'][0],
+                            _errors['type_of_case'][0],
                             style: GoogleFonts.robotoSlab(
                                 textStyle: TextStyle(
                                     color: Colors.red[700], fontSize: 12.0)),
@@ -416,17 +439,26 @@ class _CreateCaseState extends State<CreateCase> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 5.0),
-                    child: Text(
-                      'Close Date :',
-                      style: GoogleFonts.robotoSlab(
-                          textStyle: TextStyle(
-                              color: Theme.of(context).secondaryHeaderColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: screenWidth / 25)),
-                    ),
-                  ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(bottom: 5.0),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Close Date',
+                          style: GoogleFonts.robotoSlab(
+                              textStyle: TextStyle(
+                                  color: Theme.of(context).secondaryHeaderColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: screenWidth / 25)),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: '* ',
+                                style: GoogleFonts.robotoSlab(
+                                    textStyle: TextStyle(color: Colors.red))),
+                            TextSpan(
+                                text: ': ', style: GoogleFonts.robotoSlab())
+                          ],
+                        ),
+                      )),
                   GestureDetector(
                     onTap: () {
                       _selectDate(context);
@@ -835,7 +867,7 @@ class _CreateCaseState extends State<CreateCase> {
                     child: Container(
                       alignment: Alignment.center,
                       height: screenHeight * 0.06,
-                      width: screenWidth * 0.52,
+                      width: screenWidth * 0.4,
                       decoration: BoxDecoration(
                         color: submitButtonColor,
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
@@ -845,8 +877,8 @@ class _CreateCaseState extends State<CreateCase> {
                         children: [
                           Text(
                             caseBloc.currentEditCaseId == null
-                                ? 'Create Opportunity'
-                                : 'Edit Opportunity',
+                                ? 'Create Case'
+                                : 'Edit Case',
                             style: GoogleFonts.robotoSlab(
                                 textStyle: TextStyle(
                                     color: Colors.white,

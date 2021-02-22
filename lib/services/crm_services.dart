@@ -596,8 +596,8 @@ class CrmService {
   }
 
   Future<Response> createCase(data) async {
-    data.removeWhere((key, value) => value == "[]");
-    data.removeWhere((key, value) => value == "");
+    // data.removeWhere((key, value) => value == "[]");
+    // data.removeWhere((key, value) => value == "");
     data.removeWhere((key, value) => value == null);
     await updateHeaders();
     return await networkService.post(baseUrl + 'cases/',
@@ -606,8 +606,8 @@ class CrmService {
 
   Future<Response> editCase(data, id, [PlatformFile file]) async {
     await updateHeaders();
-    data.removeWhere((key, value) => value == "[]");
-    data.removeWhere((key, value) => value == "");
+    // data.removeWhere((key, value) => value == "[]");
+    // data.removeWhere((key, value) => value == "");
     data.removeWhere((key, value) => value == null);
     return await networkService.put(baseUrl + 'cases/$id/',
         headers: getFormatedHeaders(_headers), body: data);

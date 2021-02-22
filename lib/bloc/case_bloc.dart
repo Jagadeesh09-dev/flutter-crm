@@ -18,7 +18,7 @@ class CaseBloc {
     'name': "",
     'status': "",
     'priority': "",
-    'case_type': "",
+    'type_of_case': "",
     'account': "",
     'contacts': [],
     'closed_on': "",
@@ -83,7 +83,7 @@ class CaseBloc {
       'name': "",
       'status': "",
       'priority': "",
-      'case_type': "",
+      'type_of_case': "",
       'account': "",
       'contacts': [],
       'closed_on': "",
@@ -112,14 +112,8 @@ class CaseBloc {
         .map((e) => e.toString())).toList().toString();
 
     if (_copyOfCurrentEditCase['closed_on'] != "") {
-      _copyOfCurrentEditCase['close_date'] = DateFormat("yyyy-MM-dd").format(
+      _copyOfCurrentEditCase['closed_on'] = DateFormat("yyyy-MM-dd").format(
           DateFormat("dd-MM-yyyy").parse(_copyOfCurrentEditCase['closed_on']));
-    }
-
-    if (_copyOfCurrentEditCase != null) {
-      _copyOfCurrentEditCase
-          .removeWhere((key, value) => value.runtimeType != String);
-      _copyOfCurrentEditCase.removeWhere((key, value) => key == "closed_on");
     }
 
     await CrmService()
@@ -129,7 +123,6 @@ class CaseBloc {
       var res = json.decode(response.body);
       if (res["error"] == false) {
         await fetchCases();
-        // await dashboardBloc.fetchDashboardDetails();
       }
       result = res;
     }).catchError((onError) {
@@ -159,7 +152,7 @@ class CaseBloc {
       'name': editCase.name,
       'status': editCase.status,
       'priority': editCase.priority,
-      'case_type': editCase.caseType,
+      'type_of_case': editCase.caseType,
       'account': editCase.account.name,
       'contacts': _contacts,
       'closed_on': DateFormat("dd-MM-yyyy")
@@ -189,14 +182,13 @@ class CaseBloc {
         .map((e) => e.toString())).toList().toString();
 
     if (_copyOfCurrentEditCase['closed_on'] != "") {
-      _copyOfCurrentEditCase['close_date'] = DateFormat("yyyy-MM-dd").format(
+      _copyOfCurrentEditCase['closed_on'] = DateFormat("yyyy-MM-dd").format(
           DateFormat("dd-MM-yyyy").parse(_copyOfCurrentEditCase['closed_on']));
     }
 
     if (_copyOfCurrentEditCase != null) {
       _copyOfCurrentEditCase
           .removeWhere((key, value) => value.runtimeType != String);
-      _copyOfCurrentEditCase.removeWhere((key, value) => key == "closed_on");
     }
 
     await CrmService()
@@ -205,7 +197,6 @@ class CaseBloc {
       var res = json.decode(response.body);
       if (res["error"] == false) {
         await fetchCases();
-        // await dashboardBloc.fetchDashboardDetails();
       }
       result = res;
     }).catchError((onError) {

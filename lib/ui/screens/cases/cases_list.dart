@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../utils/utils.dart';
+
 class CasesList extends StatefulWidget {
   CasesList();
   @override
@@ -326,47 +328,34 @@ class _CasesListState extends State<CasesList> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: screenWidth * 0.6,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    _cases[index]
-                                        .name
-                                        .toString()
-                                        .toLowerCase()
-                                        .capitalizeFirstofEach(),
-                                    maxLines: 2,
-                                    style: GoogleFonts.robotoSlab(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: screenWidth / 24,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                Container(
-                                  // width: screenWidth * 0.3,
-                                  child: Text(
-                                    _cases[index].createdOn,
-                                    maxLines: 2,
-                                    style: GoogleFonts.robotoSlab(
-                                        color: bottomNavBarTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: screenWidth / 30),
-                                  ),
-                                ),
-                              ],
+                            width: screenWidth * 0.4,
+                            child: Text(
+                              _cases[index]
+                                  .name
+                                  .toString()
+                                  .toLowerCase()
+                                  .capitalizeFirstofEach(),
+                              maxLines: 2,
+                              style: GoogleFonts.robotoSlab(
+                                  color: Theme.of(context).secondaryHeaderColor,
+                                  fontSize: screenWidth / 24,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                           Container(
-                            // width: screenWidth * 0.3,
+                            child: Text(
+                              _cases[index].createdOn,
+                              style: GoogleFonts.robotoSlab(
+                                  color: bottomNavBarTextColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: screenWidth / 30),
+                            ),
+                          ),
+                          Container(
                             child: Text(
                               _cases[index].status != ""
                                   ? _cases[index].status
                                   : "N/A",
-                              maxLines: 2,
                               style: GoogleFonts.robotoSlab(
                                   color: (_cases[index].status == 'Closed' ||
                                           _cases[index].status == "Rejected" ||
@@ -378,132 +367,112 @@ class _CasesListState extends State<CasesList> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: screenWidth / 26),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: screenWidth * 0.6,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      child: Text("Account : ",
-                                          style: GoogleFonts.robotoSlab(
-                                              textStyle: GoogleFonts.robotoSlab(
-                                                  color: Colors.grey,
-                                                  fontSize: screenWidth / 28))),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                          _cases[index].account.name != null &&
-                                                  _cases[index].account.name !=
-                                                      ""
-                                              ? _cases[index].account.name
-                                              : "N/A",
-                                          style: GoogleFonts.robotoSlab(
-                                              textStyle: GoogleFonts.robotoSlab(
-                                                  color:
-                                                      bottomNavBarSelectedTextColor,
-                                                  fontSize: screenWidth / 28))),
-                                    ),
-                                  ],
+                          Container(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text("Account : ",
+                                      style: GoogleFonts.robotoSlab(
+                                          textStyle: GoogleFonts.robotoSlab(
+                                              color: bottomNavBarTextColor,
+                                              fontSize: screenWidth / 28))),
                                 ),
-                              ),
-                              Container(
-                                width: screenWidth * 0.44,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      child: Text("Priority : ",
-                                          style: GoogleFonts.robotoSlab(
-                                              textStyle: GoogleFonts.robotoSlab(
-                                                  color: Colors.grey,
-                                                  fontSize: screenWidth / 28))),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                          _cases[index].priority != null &&
-                                                  _cases[index].priority != ""
-                                              ? _cases[index].priority
-                                              : "N/A",
-                                          style: GoogleFonts.robotoSlab(
-                                              textStyle: GoogleFonts.robotoSlab(
-                                                  color:
-                                                      bottomNavBarSelectedTextColor,
-                                                  fontSize: screenWidth / 28))),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                Text(
+                                    _cases[index].account.name != null &&
+                                            _cases[index].account.name != ""
+                                        ? _cases[index].account.name
+                                        : "N/A",
+                                    style: GoogleFonts.robotoSlab(
+                                        textStyle: GoogleFonts.robotoSlab(
+                                            color:
+                                                bottomNavBarSelectedTextColor,
+                                            fontSize: screenWidth / 28))),
+                              ],
+                            ),
                           ),
                           Container(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await caseBloc.updateCurrentEditCase(
-                                              _cases[index]);
-                                          Navigator.pushNamed(
-                                              context, '/create_case');
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 10.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 1.0,
-                                                color: Colors.grey[300]),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3.0)),
-                                          ),
-                                          padding: EdgeInsets.all(4.0),
-                                          child: SvgPicture.asset(
-                                            'assets/images/Icon_edit_color.svg',
-                                            width: screenWidth / 23,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showDeleteCaseAlertDialog(
-                                              context, _cases[index], index);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 1.0,
-                                                color: Colors.grey[300]),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3.0)),
-                                          ),
-                                          padding: EdgeInsets.all(4.0),
-                                          child: SvgPicture.asset(
-                                            'assets/images/icon_delete_color.svg',
-                                            width: screenWidth / 23,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                GestureDetector(
+                                  onTap: () async {
+                                    await caseBloc
+                                        .updateCurrentEditCase(_cases[index]);
+                                    Navigator.pushNamed(
+                                        context, '/create_case');
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 10.0),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1.0, color: Colors.grey[300]),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(3.0)),
+                                    ),
+                                    padding: EdgeInsets.all(4.0),
+                                    child: SvgPicture.asset(
+                                      'assets/images/Icon_edit_color.svg',
+                                      width: screenWidth / 23,
+                                    ),
                                   ),
-                                )
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDeleteCaseAlertDialog(
+                                        context, _cases[index], index);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1.0, color: Colors.grey[300]),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(3.0)),
+                                    ),
+                                    padding: EdgeInsets.all(4.0),
+                                    child: SvgPicture.asset(
+                                      'assets/images/icon_delete_color.svg',
+                                      width: screenWidth / 23,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: screenWidth * 0.44,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Text("Priority : ",
+                                style: GoogleFonts.robotoSlab(
+                                    textStyle: GoogleFonts.robotoSlab(
+                                        color: bottomNavBarTextColor,
+                                        fontSize: screenWidth / 28))),
+                          ),
+                          Expanded(
+                            child: Text(
+                                _cases[index].priority != null &&
+                                        _cases[index].priority != ""
+                                    ? _cases[index].priority
+                                    : "N/A",
+                                style: GoogleFonts.robotoSlab(
+                                    textStyle: GoogleFonts.robotoSlab(
+                                        color: bottomNavBarSelectedTextColor,
+                                        fontSize: screenWidth / 28))),
+                          ),
                         ],
                       ),
                     ),

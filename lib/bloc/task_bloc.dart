@@ -83,8 +83,6 @@ class TaskBloc {
       }
     });
 
-    print(_copyCurrentEditTask);
-
     await CrmService().createTask(_copyCurrentEditTask).then((response) async {
       var res = json.decode(response.body);
       if (res['error'] == false) {

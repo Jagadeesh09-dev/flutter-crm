@@ -47,7 +47,7 @@ class Case {
   Case.fromJson(Map data) {
     this.status = data['status'] != null ? data['status'] : "";
     this.priority = data['priority'] != null ? data['priority'] : "";
-    this.caseType = data['case_type'] != null ? data['case_type'] : "";
+    this.caseType = data['type_of_case'] != null ? data['type_of_case'] : "";
     this.id = data['id'] != null ? data['id'] : 0;
     this.name = data['name'] != null ? data['name'] : "";
     this.account =
@@ -87,7 +87,7 @@ class Case {
       'name': name,
       'status': status,
       'priority': priority,
-      'case_type': caseType,
+      'type_of_case': caseType,
       'account': account,
       'contacts': contacts,
       'closed_on': closedOn,

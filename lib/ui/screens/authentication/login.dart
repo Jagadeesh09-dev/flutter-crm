@@ -41,7 +41,7 @@ class _UserLoginState extends State<UserLogin> {
       setState(() {
         _errorMessage = null;
       });
-      fetchRequiredData();
+      await fetchRequiredData();
       Navigator.pushNamedAndRemoveUntil(
           context, '/dashboard', (route) => false);
     } else if (result['error'] == true) {

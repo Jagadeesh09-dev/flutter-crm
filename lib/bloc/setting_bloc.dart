@@ -173,8 +173,6 @@ class SettingsBloc {
   Future createSetting() async {
     Map _result;
     Map _copyOfCurrentEditSetting = Map.from(_currentEditSetting);
-    print(_currentEditSetting);
-    print(_currentSettingsTab);
     await CrmService()
         .createSetting(_copyOfCurrentEditSetting)
         .then((response) async {
